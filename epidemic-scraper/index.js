@@ -19,13 +19,13 @@ for (const genre of genreTree) {
         }
         
         const audioList = await getAudioList(child);
-        audioList.forEach((audio) => {
+        for (const audio of audioList) {
             const outputPath = `${getGenrePath(audio.genreSlug, rootDir)}/${audio.title}.mp3`;
-            downloadAudioFile(audio.url, outputPath).catch((error) => {
+            await downloadAudioFile(audio.url, outputPath).catch((error) => {
                 console.error(`Download of ${audio.title} failed: ${error.message}`);
             });
-        });
-        
+        }
+
         console.log(`Downloaded ${audioList.length} audio files for ${genre.displayTag}-${child.displayTag}`);
     }
 }

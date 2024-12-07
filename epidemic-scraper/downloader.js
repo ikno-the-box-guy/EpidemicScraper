@@ -9,17 +9,26 @@ export async function downloadAudioFile(fileUrl, outputPath) {
             fs.mkdirSync(dir, {recursive: true});
         
         const file = fs.createWriteStream(outputPath);
-        const request = https.get(fileUrl, function(response) {
+        https.get(fileUrl, (response) => {
             response.pipe(file);
         });
         
         return new Promise((resolve, reject) => {
-            file.on('finish', function() {
+            file.on('finish', () => {
                 file.close();
+
+                const stats = fs.statSync(outputPath);
+                if (stats.size === 0) {
+                    fs.unlinkSync(outputPath);
+                    reject(new Error("Downloaded file is 0KB"));
+                    return;
+                }
+                
                 resolve();
             });
             
             file.on('error', function(error) {
+                console.error('Download failed:', error.message);
                 fs.unlink(outputPath, () => reject(error));
             });
         });
