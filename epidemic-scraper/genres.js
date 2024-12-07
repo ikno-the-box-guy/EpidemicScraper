@@ -27,7 +27,7 @@ export async function getAudioList(genre) {
 
     const audioList = [];
     
-    for (let i = 1; i <= pages && i <= 51; i++) {
+    for (let i = 1; i <= pages && i <= 50; i++) {
         const data = await fetchGenrePage(genre, i);
         
         if (!data.meta || !data.meta.totalPages) {
