@@ -9,6 +9,12 @@ const genreTree = buildGenreTree(genres);
 
 const rootDir = 'dist/genres';
 
+let childCount = 0;
+for (const genre of genreTree) {
+    childCount += genre.children.length;
+}
+
+let progress = 0;
 for (const genre of genreTree) {
     for (const child of genre.children) {
         // Skip if the genre directory already exists
@@ -26,7 +32,8 @@ for (const genre of genreTree) {
             });
         }
 
-        console.log(`Downloaded ${audioList.length} audio files for ${genre.displayTag}-${child.displayTag}`);
+        progress++;
+        console.log(`Downloaded ${audioList.length} audio files for ${genre.displayTag}-${child.displayTag} (${progress}/${childCount})`);
     }
 }
 
