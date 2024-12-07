@@ -1,5 +1,5 @@
 ﻿import {buildGenreTree, getAudioList} from "./genres.js";
-import {createGenreDirectories, getGenrePath} from "./directories.js";
+import {getGenrePath} from "./directories.js";
 import {fetchGenres} from "./api.js";
 import {downloadAudioFile} from "./downloader.js";
 
@@ -7,7 +7,6 @@ const genres = await fetchGenres();
 const genreTree = buildGenreTree(genres);
 
 const rootDir = 'dist/genres';
-createGenreDirectories(genreTree, rootDir);
 
 for (const genre of genreTree) {
     for (const child of genre.children) {
@@ -19,7 +18,7 @@ for (const genre of genreTree) {
             });
         });
         
-        console.log(`Downloaded ${audioList.length} audio files for ${child.name}`);
+        console.log(`Downloaded ${audioList.length} audio files for ${genre.displayTag}-${child.displayTag}`);
     }
 }
 

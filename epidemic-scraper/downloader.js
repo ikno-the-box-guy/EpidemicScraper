@@ -1,8 +1,13 @@
 ﻿import fs from "node:fs";
 import * as https from "node:https";
+import * as path from "node:path";
 
 export async function downloadAudioFile(fileUrl, outputPath) {
     try {
+        const dir = path.dirname(outputPath);
+        if (!fs.existsSync(dir))
+            fs.mkdirSync(dir, {recursive: true});
+        
         const file = fs.createWriteStream(outputPath);
         const request = https.get(fileUrl, function(response) {
             response.pipe(file);
